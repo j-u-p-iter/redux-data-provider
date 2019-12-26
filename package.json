@@ -1,6 +1,6 @@
 {
   "name": "@j.u.p.iter/redux-data-provider",
-  "version": "0.0.0-semantically-released",
+  "version": "0.0.1",
   "description": "Universal redux tool to provide and manage data",
   "keywords": [
     "react",
@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "@j.u.p.iter/data-provider": "^1.7.2",
-    "@j.u.p.iter/jupiter-scripts": "^1.6.0",
+    "@j.u.p.iter/jupiter-scripts": "^1.14.1",
     "@j.u.p.iter/react-test-utils": "^1.5.0",
     "@testing-library/react": "^9.4.0",
     "@types/get-value": "^3.0.1",
