@@ -2,7 +2,7 @@ import { DataProvider } from "@j.u.p.iter/data-provider";
 
 import { useResourceProvider } from "./useResourceProvider";
 
-type UseActionsHook = () => {
+export type UseActionsHook = () => {
   getList: (
     page: number
   ) => Promise<{ data: { items: { [key: string]: any } } }>;
@@ -21,7 +21,7 @@ type UseActionsHook = () => {
   delete: (id: string) => Promise<{ data: { [key: string]: any } }>;
 };
 
-type CreateUseActionsFn = (
+export type CreateUseActionsFn = (
   dataProvider: DataProvider,
   resource: string,
   storeScope: string

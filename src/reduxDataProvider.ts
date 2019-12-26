@@ -3,8 +3,11 @@ import { DataProvider } from "@j.u.p.iter/data-provider";
 import { createStoreScope } from "./helpers";
 import { createUseActions } from "./useActions";
 
-type CreateReduxDataProviderFn = (resource: string, storeScope?: string) => any;
-type CreateReduxDataProviderFactory = (
+export type CreateReduxDataProviderFn = (
+  resource: string,
+  storeScope?: string
+) => any;
+export type CreateReduxDataProviderFactory = (
   dataProvider: DataProvider
 ) => CreateReduxDataProviderFn;
 

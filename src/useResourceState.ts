@@ -18,13 +18,14 @@ import { useSelector } from "react-redux";
 //
 // For this case storeScope will look like this: "resources.posts"
 
-type UseResourceState = (
+export type UseResourceState = (
   storeScope: string
 ) => {
   listData: any[];
   itemData: { [key: string]: any };
   page: number;
 };
+
 export const useResourceState: UseResourceState = storeScope => {
   const selector = state => get(state, storeScope);
   const {

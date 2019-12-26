@@ -1,6 +1,6 @@
 import { useResourceState } from "./useResourceState";
 
-type UseResourceProviderHook = (
+export type UseResourceProviderHook = (
   storeScope: string
 ) => {
   getList: (page: number) => Array<{ [key: string]: any }>;
