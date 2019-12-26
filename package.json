@@ -1,6 +1,6 @@
 {
   "name": "@j.u.p.iter/redux-data-provider",
-  "version": "0.0.1",
+  "version": "0.0.0-semantically-released",
   "description": "Universal redux tool to provide and manage data",
   "keywords": [
     "react",
