@@ -1,0 +1,46 @@
+{
+  "name": "@j.u.p.iter/redux-data-provider",
+  "version": "0.0.0-semantically-released",
+  "description": "Universal redux tool to provide and manage data",
+  "keywords": [
+    "react",
+    "data provider"
+  ],
+  "main": "dist/lib/redux-data-provider.cjs.js",
+  "module": "dist/lib/redux-data-provider.esm.js",
+  "umd:main": "dist/lib/redux-data-provider.umd.min.js",
+  "typings": "dist/types",
+  "repository": "git@github.com:j-u-p-iter/redux-data-provider.git",
+  "author": "Leontyev Kirill (j.u.p.iter) <pn79122821224@gmail.com> (http://j-u-p-iter.pro/)",
+  "license": "MIT",
+  "scripts": {
+    "commit": "jupiter-scripts precommit --allowJs",
+    "build": "jupiter-scripts build --bundle",
+    "start": "yarn run build --watch",
+    "lint": "jupiter-scripts lint --format codeFrame",
+    "lint:fix": "yarn run lint --fix",
+    "test": "jupiter-scripts test"
+  },
+  "devDependencies": {
+    "@j.u.p.iter/data-provider": "^1.7.2",
+    "@j.u.p.iter/jupiter-scripts": "^1.6.0",
+    "@j.u.p.iter/react-test-utils": "^1.5.0",
+    "@testing-library/react": "^9.4.0",
+    "@types/get-value": "^3.0.1",
+    "@types/react": "^16.8.8",
+    "@types/react-dom": "^16.8.3",
+    "nock": "^11.7.0",
+    "react": "^16.8.2",
+    "react-dom": "^16.8.2",
+    "react-redux": "^7.1.3",
+    "react-router-dom": "^5.1.2",
+    "redux": "^4.0.4",
+    "wait-for-expect": "^1.1.0"
+  },
+  "peerDependencies": {
+    "react": ">=16.8.0"
+  },
+  "dependencies": {
+    "get-value": "^3.0.1"
+  }
+}

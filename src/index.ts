@@ -1,0 +1,1 @@
+export { createReduxDataProviderFactory } from "./reduxDataProvider";
