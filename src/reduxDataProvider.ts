@@ -13,11 +13,11 @@ export type CreateReduxDataProviderFactory = (
 
 export const createReduxDataProviderFactory: CreateReduxDataProviderFactory = dataProvider => {
   const createReduxDataProvider: CreateReduxDataProviderFn = resource => {
-    const resultScopeScope = createStoreScope(resource);
+    const resultStoreScope = createStoreScope(resource);
     const useActions = createUseActions(
       dataProvider,
       resource,
-      resultScopeScope
+      resultStoreScope
     );
 
     return {
