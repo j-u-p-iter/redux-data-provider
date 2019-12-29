@@ -20,9 +20,7 @@ export type UseActionsHook = () => {
   getOne: (id: string) => Promise<{ data: { [key: string]: any } }>;
 
   create: (
-    data: {
-      [key: string]: any;
-    }
+    data: { [key: string]: any; }
   ) => Promise<{ data: { [key: string]: any } }>;
 
   update: (
