@@ -24,11 +24,13 @@ describe("reduxDataProvider", () => {
       host: "some-host.com"
     });
 
-    const postsReducer = createReducer("posts");
+    const postsReducer = createReducer(resource);
+    const patternsReducer = createReducer("patterns");
 
     const rootReducer = (state, action) => ({
       resources: {
-        posts: postsReducer(state.resources.posts, action)
+        posts: postsReducer(state.resources.posts, action),
+        patterns: patternsReducer(state.resources.patterns, action)
       }
     });
 
@@ -40,6 +42,13 @@ describe("reduxDataProvider", () => {
         rootReducer,
         initialState: {
           resources: {
+            patterns: {
+              list: {
+                data: [],
+                page: null
+              },
+              item: {}
+            },
             posts: {
               list: {
                 data: [],
