@@ -82,9 +82,7 @@ export const createInitialState: CreateInitialStateFn = () => {
 };
 
 export const createReducer = resource => {
-  const initialState = createInitialState();
-
-  return (state = initialState, action) => {
+  return (state, action) => {
     if (action.payload && resource !== action.payload.resource) {
       return state;
     }

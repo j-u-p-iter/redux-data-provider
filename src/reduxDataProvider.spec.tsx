@@ -4,7 +4,7 @@ import { cleanup, wait } from "@testing-library/react";
 import nock from "nock";
 import * as React from "react";
 import { useSelector } from "react-redux";
-import { createReducer } from "./createReducer";
+import { createInitialState, createReducer } from "./createReducer";
 
 import { createReduxDataProviderFactory } from ".";
 
@@ -42,19 +42,9 @@ describe("reduxDataProvider", () => {
         rootReducer,
         initialState: {
           resources: {
-            patterns: {
-              list: {
-                data: [],
-                page: null
-              },
-              item: {}
-            },
+            patterns: createInitialState(),
             posts: {
-              list: {
-                data: [],
-                page: null
-              },
-              item: {},
+              ...createInitialState(),
               ...newState
             }
           }
@@ -422,6 +412,10 @@ describe("reduxDataProvider", () => {
             {
               id: postId,
               title: "simple post"
+            },
+            {
+              id: 2,
+              title: "one more post"
             }
           ],
           page: 1
