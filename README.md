@@ -63,10 +63,35 @@ const { useActions, reducer: postsReducer } = postsReduxDataProvider;
 
 // actions you can use to manage posts data
 const { getList, getOne, create, update, delete } = useActions();
+```
 
-const PostsList: FC = () => {
-  useEffect
-  return posts.map();
+### Examples of usage of an actions
+Here we'll look at several examples of how to use previous actions. These are common actions we use daily, so we'll take a look at these actions very breifly.
+
+#### getList
+
+```typescript
+const PostsList = () => {
+  const [posts, setPosts] = useState([]);
+
+  const { getList } = useActions();
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      const posts = await getList();
+      
+      setPosts(posts);
+    }
+  }, []);
+  
+  return posts.map(({ title, description }) => {
+    return (
+      <div>
+        <h2>{title}</h2>
+        <p>{description}</p>
+      </div>
+    );
+  });
 }
 ```
 
