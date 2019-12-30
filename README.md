@@ -101,11 +101,13 @@ const PostsList = () => {
 const CreatePostForm = () => {
   const { create: createPost } = useActions();
   
-  const onClick = () => {
-    createPost({
+  const onClick = async () => {
+    const {id: postId} = await createPost({
       title: 'some title',
       description: 'some description',
     });
+    
+    redirectTo(`/post/${postId}`);
   };
   
   return (
