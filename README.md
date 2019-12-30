@@ -10,13 +10,20 @@ The goal of this repo is to provide access to all necessary tools to create base
 - to reduce amount of boilerplate code in your application
 - to create things faster
 
+*Also we implemented simple caching mechanism to reduce amount of HTTP calls.* 
+- we don't send HTTP calls, when we already have updated data we need to show on client side
+
 ## How to use it?
 
 ### Install package
 
 ### Import factory to create data provider factory ;)
 
-You can use this tool with different data providers. However there's requirement for interface, that each data provider should have.
+```typescript
+import { createReduxDataProviderFactory } from '@j.u.p.iter/redux-data-provider';
+```
+
+You can use this tool with different data providers. You can use one of our data providers: https://github.com/j-u-p-iter/data-provider. Or you create your own data provider. There's requirement to interface, that each data provider should have.
 
 So, on this step you should bind dataProvider you want to use to reduxDataProvider. You should do it, using createDataProviderFactory method. This is the only method, exposed by the package.
 
@@ -26,7 +33,6 @@ You should create one common data provider factory for the whole application in 
 const graphQLDataProvider = createGraphQLDataProvider();
 
 const createReduxDataProvider = createReduxDataProviderFactory(graphQLDataProvider);
-
 ...
 ```
 
@@ -40,3 +46,11 @@ Some examples:
 const postsReduxDataProvider = createReduxDataProvider('posts');
 const usersReduxDataProvider = createReduxDataProvider('users');
 ```
+
+### Use data provider
+
+After you create data provider for concrete resource, you get access to:
+- set of actions you can call to manage resource data;
+- reducer you should include into your rootReducer to get access resource data in your application.
+
+Let's look at one simple example:
