@@ -116,3 +116,24 @@ const CreatePostForm = () => {
 }
 ```
 
+#### update
+
+```typescript
+const UpdatePostForm = ({ postId }) => {
+  const { update: updatePost } = useActions();
+  
+  const onClick = async () => {
+    await updatePost({
+      id: postId,
+      title: 'new title',
+      description: 'new description',
+    });
+    
+    redirectTo(`/post/${postId}`);
+  };
+  
+  return (
+    <button> onClick={onClick}>Update post</button>
+  );
+}
+```
