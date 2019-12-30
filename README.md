@@ -102,7 +102,7 @@ const CreatePostForm = () => {
   const { create: createPost } = useActions();
   
   const onClick = async () => {
-    const {id: postId} = await createPost({
+    const { id: postId } = await createPost({
       title: 'some title',
       description: 'some description',
     });
