@@ -98,7 +98,7 @@ const PostsList = () => {
 #### create
 
 ```typescript
-const CreatePostForm = () => {
+const CreatePostForm: FC = () => {
   const { create: createPost } = useActions();
   
   const onClick = async () => {
@@ -119,7 +119,7 @@ const CreatePostForm = () => {
 #### update
 
 ```typescript
-const UpdatePostForm = ({ postId }) => {
+const UpdatePostForm: FC<{ postId: number; }> = ({ postId }) => {
   const { update: updatePost } = useActions();
   
   const onClick = async () => {
