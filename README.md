@@ -54,3 +54,14 @@ After you create data provider for concrete resource, you get access to:
 - reducer you should include into your rootReducer to get access resource data in your application.
 
 Let's look at one simple example:
+
+```typescript
+const postsReduxDataProvider = createReduxDataProvider('posts');
+
+// postsReducer should be included into root reducer of your application
+const { useActions, reducer: postsReducer } = postsReduxDataProvider;
+
+// actions you can use to manage posts data
+const { getList, getOne, create, update, delete } = useActions();
+```
+
