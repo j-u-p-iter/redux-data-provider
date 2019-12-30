@@ -63,5 +63,10 @@ const { useActions, reducer: postsReducer } = postsReduxDataProvider;
 
 // actions you can use to manage posts data
 const { getList, getOne, create, update, delete } = useActions();
+
+const PostsList: FC = () => {
+  useEffect
+  return posts.map();
+}
 ```
 
