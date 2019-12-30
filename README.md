@@ -95,3 +95,22 @@ const PostsList = () => {
 }
 ```
 
+#### create
+
+```typescript
+const CreatePostForm = () => {
+  const { create: createPost } = useActions();
+  
+  const onClick = () => {
+    createPost({
+      title: 'some title',
+      description: 'some description',
+    });
+  };
+  
+  return (
+    <button> onClick={onClick}>Create post</button>
+  );
+}
+```
+
