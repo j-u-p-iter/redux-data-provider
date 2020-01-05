@@ -1,6 +1,7 @@
 import { useDispatch } from "react-redux";
 
 import { DataProvider } from "@j.u.p.iter/data-provider";
+import { Config } from "./reduxDataProvider";
 
 import {
   CREATE_ITEM_WITH_SUCCESS,
@@ -34,13 +35,15 @@ export type UseActionsHook = () => {
 export type CreateUseActionsFn = (
   dataProvider: DataProvider,
   resource: string,
-  storeScope: string
+  storeScope: string,
+  config: Config
 ) => UseActionsHook;
 
 export const createUseActions: CreateUseActionsFn = (
   dataProvider,
   resource,
-  storeScope
+  storeScope,
+  { getList: { pagination } }
 ) => {
   const useActions: UseActionsHook = () => {
     const { getList, getOne } = useResourceProvider(storeScope);
@@ -55,7 +58,9 @@ export const createUseActions: CreateUseActionsFn = (
           return { data: { items: dataFromStore } };
         }
 
-        const data = await dataProvider.getList(resource);
+        const data = await dataProvider.getList(resource, {
+          pagination: { ...pagination, offset: page - 1 }
+        });
 
         dispatch(
           createAction(FETCH_DATA_WITH_SUCCESS, {
