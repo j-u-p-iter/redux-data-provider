@@ -3,6 +3,7 @@ import { DataProvider } from "@j.u.p.iter/data-provider";
 import { createReducer } from "./createReducer";
 import { createStoreScope } from "./helpers";
 import { createUseActions } from "./useActions";
+import { createUseMutation } from "./useMutation";
 import { createUseQuery } from "./useQuery";
 
 export interface Config {
@@ -38,11 +39,18 @@ export const createReduxDataProviderFactory: CreateReduxDataProviderFactory = da
       resultStoreScope,
       config
     );
+    const useMutation = createUseMutation(
+      dataProvider,
+      resource,
+      resultStoreScope,
+      config
+    );
     const reducer = createReducer(resource);
 
     return {
       useActions,
       useQuery,
+      useMutation,
       reducer
     };
   };

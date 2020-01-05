@@ -13,7 +13,7 @@ import {
 } from "./createReducer";
 import { useResourceProvider } from "./useResourceProvider";
 
-export type UseActionsHook = () => {
+export interface Actions {
   getList: (
     page: number
   ) => Promise<{ data: { items: { [key: string]: any } } }>;
@@ -30,7 +30,9 @@ export type UseActionsHook = () => {
   ) => Promise<{ data: { [key: string]: any } }>;
 
   delete: (id: string) => Promise<{ data: { [key: string]: any } }>;
-};
+}
+
+export type UseActionsHook = () => Actions;
 
 export type CreateUseActionsFn = (
   dataProvider: DataProvider,

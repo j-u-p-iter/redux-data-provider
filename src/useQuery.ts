@@ -7,7 +7,10 @@ import { createUseActions } from "./useActions";
 export type UseQueryHook = (
   fetchName: string,
   params: { id?: string; page?: number }
-) => any;
+) => {
+  data: { [key: string]: any };
+  isLoading: boolean;
+};
 
 export type CreateUseQueryFn = (
   dataProvider: DataProvider,

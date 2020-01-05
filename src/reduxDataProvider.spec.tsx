@@ -1,6 +1,6 @@
 import { createBaseRestDataProvider } from "@j.u.p.iter/data-provider";
 import { renderReduxComponent } from "@j.u.p.iter/react-test-utils";
-import { cleanup, wait } from "@testing-library/react";
+import { cleanup, fireEvent, wait } from "@testing-library/react";
 import nock from "nock";
 import * as React from "react";
 import { useSelector } from "react-redux";
@@ -659,6 +659,59 @@ describe("reduxDataProvider", () => {
         expect(queryByTestId("spinner")).toBe(null);
         expect(getByTestId("title-from-fetch").textContent).toBe("hello");
         expect(getByTestId("title-from-store").textContent).toBe("hello");
+      });
+    });
+  });
+
+  describe("useMutation", () => {
+    describe("create mutation", () => {
+      beforeAll(() => {
+        nock("https://some-host.com/api/v1")
+          .persist()
+          .post("/posts")
+          .reply(200, { data: { items: [{ id: 5, title: "hello" }] } });
+
+        TestComponent = () => {
+          const { mutation: create, isLoading } = reduxDataProvider.useMutation(
+            "create"
+          );
+
+          const { item: postFromStore } = useSelector(
+            state => state.resources.posts
+          );
+
+          return (
+            <>
+              <button
+                data-testid="button"
+                onClick={() => create({ title: "hello" })}
+              />
+              {!isLoading ? (
+                <div>
+                  <div data-testid="title-from-store">
+                    {postFromStore.title}
+                  </div>
+                </div>
+              ) : (
+                <div data-testid="spinner">Spinner</div>
+              )}
+            </>
+          );
+        };
+      });
+
+      it("works properly", () => {
+        const { queryByTestId, getByTestId } = renderComponent();
+
+        fireEvent.click(getByTestId("button"));
+
+        wait(() => {
+          expect(queryByTestId("spinner")).not.toBe(null);
+        });
+
+        wait(() => {
+          expect(getByTestId("title-from-store").textContent).toBe("hello");
+        });
       });
     });
   });
