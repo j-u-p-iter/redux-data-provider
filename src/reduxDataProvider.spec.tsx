@@ -17,7 +17,10 @@ describe("reduxDataProvider", () => {
 
   const resource = "posts";
 
-  afterEach(cleanup);
+  afterEach(() => {
+    cleanup();
+    nock.cleanAll();
+  });
 
   beforeAll(() => {
     const dataProvider = createBaseRestDataProvider({
@@ -669,7 +672,7 @@ describe("reduxDataProvider", () => {
         nock("https://some-host.com/api/v1")
           .persist()
           .post("/posts")
-          .reply(200, { data: { items: [{ id: 5, title: "hello" }] } });
+          .reply(200, { data: { items: [{ id: 5, title: "hello again" }] } });
 
         TestComponent = () => {
           const { mutation: create, isLoading } = reduxDataProvider.useMutation(
@@ -684,7 +687,7 @@ describe("reduxDataProvider", () => {
             <>
               <button
                 data-testid="button"
-                onClick={() => create({ title: "hello" })}
+                onClick={() => create({ title: "hello again" })}
               />
               {!isLoading ? (
                 <div>
@@ -700,17 +703,107 @@ describe("reduxDataProvider", () => {
         };
       });
 
-      it("works properly", () => {
+      it("works properly", async () => {
         const { queryByTestId, getByTestId } = renderComponent();
 
         fireEvent.click(getByTestId("button"));
 
-        wait(() => {
-          expect(queryByTestId("spinner")).not.toBe(null);
-        });
+        expect(queryByTestId("spinner")).not.toBe(null);
+        expect(queryByTestId("title-from-store")).toBe(null);
 
-        wait(() => {
-          expect(getByTestId("title-from-store").textContent).toBe("hello");
+        await wait(() => {
+          expect(getByTestId("title-from-store").textContent).toBe(
+            "hello again"
+          );
+          expect(queryByTestId("spinner")).toBe(null);
+        });
+      });
+    });
+
+    describe("update mutation", () => {
+      beforeAll(() => {
+        nock("https://some-host.com/api/v1")
+          .persist()
+          .put("/posts/5")
+          .reply(200, { data: { items: [{ id: 5, title: "hello again" }] } });
+
+        TestComponent = () => {
+          const { mutation: update, isLoading } = reduxDataProvider.useMutation(
+            "update"
+          );
+
+          const { item: postFromStore } = useSelector(
+            state => state.resources.posts
+          );
+
+          return (
+            <>
+              <button
+                data-testid="button"
+                onClick={() => update(5, { title: "hello again" })}
+              />
+              {!isLoading ? (
+                <div>
+                  <div data-testid="title-from-store">
+                    {postFromStore.title}
+                  </div>
+                </div>
+              ) : (
+                <div data-testid="spinner">Spinner</div>
+              )}
+            </>
+          );
+        };
+      });
+
+      it("works properly", async () => {
+        const { queryByTestId, getByTestId } = renderComponent();
+
+        fireEvent.click(getByTestId("button"));
+
+        expect(queryByTestId("spinner")).not.toBe(null);
+        expect(queryByTestId("title-from-store")).toBe(null);
+
+        await wait(() => {
+          expect(getByTestId("title-from-store").textContent).toBe(
+            "hello again"
+          );
+          expect(queryByTestId("spinner")).toBe(null);
+        });
+      });
+    });
+
+    describe("delete mutation", () => {
+      beforeAll(() => {
+        nock("https://some-host.com/api/v1")
+          .persist()
+          .delete("/posts/5")
+          .reply(200, { data: { items: [{ id: 5, title: "hello again" }] } });
+
+        TestComponent = () => {
+          const {
+            mutation: deleteOne,
+            isLoading
+          } = reduxDataProvider.useMutation("delete");
+
+          return (
+            <>
+              <button data-testid="button" onClick={() => deleteOne(5)} />
+              {isLoading ? <div data-testid="spinner">Spinner</div> : null}
+            </>
+          );
+        };
+      });
+
+      it("works properly", async () => {
+        const { queryByTestId, getByTestId } = renderComponent();
+
+        fireEvent.click(getByTestId("button"));
+
+        expect(queryByTestId("spinner")).not.toBe(null);
+
+        await wait(() => {
+          expect(queryByTestId("spinner")).toBe(null);
         });
       });
     });

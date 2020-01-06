@@ -43,7 +43,7 @@ export const createUseMutation: CreateUseMutationFn = (
 
       setIsLoading(false);
 
-      return data.items[resource];
+      return data.data.items[0];
     };
 
     return {
