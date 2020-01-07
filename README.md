@@ -137,3 +137,21 @@ const UpdatePostForm: FC<{ postId: number; }> = ({ postId }) => {
   );
 }
 ```
+
+Actions gives you flexibility. They allow you to send requests and handle them in any fashion.
+
+But in most cases you'll use actions according to some common pattern.
+
+First of all we should say, that all actions can be splitted into two different categories of actions.
+
+First category includes actions, that do fetch. You can fetch list of resources or one particular resource. Such type of actions are called queries. So, queries is the first category of an actions.
+
+Second category includes actions, that do some type of modifications: create/update/delete. Such type of actions are called mutations. So, mutations is the second category of an actions.
+
+Each category of actions has it's own common usage pattern.
+
+Let's look closer at each of these patterns.
+
+Queries
+Queries are requests, that do fetches of single or multiple resources.
+
