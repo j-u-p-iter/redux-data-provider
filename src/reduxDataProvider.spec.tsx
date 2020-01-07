@@ -4,7 +4,7 @@ import { cleanup, fireEvent, wait } from "@testing-library/react";
 import nock from "nock";
 import * as React from "react";
 import { useSelector } from "react-redux";
-import { createInitialState, createReducer } from "./createReducer";
+import { createInitialState, createReducer } from "./reducer";
 
 import { createReduxDataProviderFactory } from ".";
 
@@ -28,6 +28,7 @@ describe("reduxDataProvider", () => {
     });
 
     const patternsReducer = createReducer("patterns");
+    const postsReducer = createReducer("posts");
 
     reduxDataProvider = createReduxDataProviderFactory(dataProvider)(resource, {
       getList: {
@@ -39,7 +40,7 @@ describe("reduxDataProvider", () => {
 
     const rootReducer = (state, action) => ({
       resources: {
-        posts: reduxDataProvider.reducer(state.resources.posts, action),
+        posts: postsReducer(state.resources.posts, action),
         patterns: patternsReducer(state.resources.patterns, action)
       }
     });

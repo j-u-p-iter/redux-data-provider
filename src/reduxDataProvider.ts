@@ -1,6 +1,5 @@
 import { DataProvider } from "@j.u.p.iter/data-provider";
 
-import { createReducer } from "./createReducer";
 import { createStoreScope } from "./helpers";
 import { createUseActions } from "./useActions";
 import { createUseMutation } from "./useMutation";
@@ -45,13 +44,11 @@ export const createReduxDataProviderFactory: CreateReduxDataProviderFactory = da
       resultStoreScope,
       config
     );
-    const reducer = createReducer(resource);
 
     return {
       useActions,
       useQuery,
-      useMutation,
-      reducer
+      useMutation
     };
   };
 

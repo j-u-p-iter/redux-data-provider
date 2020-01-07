@@ -10,7 +10,7 @@ import {
   FETCH_DATA_WITH_SUCCESS,
   FETCH_ITEM_WITH_SUCCESS,
   UPDATE_ITEM_WITH_SUCCESS
-} from "./createReducer";
+} from "./reducer";
 import { useResourceProvider } from "./useResourceProvider";
 
 export interface Actions {
