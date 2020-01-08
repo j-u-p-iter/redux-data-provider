@@ -1,2 +1,2 @@
 export { createReduxDataProviderFactory } from "./reduxDataProvider";
-export { createReducer } from "./reducer";
+export { createReducer, createInitialState } from "./reducer";
