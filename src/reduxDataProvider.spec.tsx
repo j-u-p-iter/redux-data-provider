@@ -34,6 +34,10 @@ describe("reduxDataProvider", () => {
       getList: {
         pagination: {
           limit: 10
+        },
+        sorting: {
+          sortBy: "title",
+          sortDir: "desc"
         }
       }
     });
@@ -123,7 +127,7 @@ describe("reduxDataProvider", () => {
         request = nock("https://some-host.com/api/v1")
           .persist()
           .get("/posts")
-          .query({ limit: 10, offset: 0 })
+          .query({ limit: 10, offset: 0, sortBy: "title", sortDir: "desc" })
           .reply(200, { data: { items: [post] } });
       });
 
@@ -547,7 +551,7 @@ describe("reduxDataProvider", () => {
         nock("https://some-host.com/api/v1")
           .persist()
           .get("/posts")
-          .query({ limit: 10, offset: 1 })
+          .query({ limit: 10, offset: 1, sortBy: "title", sortDir: "desc" })
           .reply(200, {
             data: {
               items: [{ title: "hello" }, { title: "hello1" }]

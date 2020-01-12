@@ -10,6 +10,10 @@ export interface Config {
     pagination: {
       limit: number;
     };
+    sorting?: {
+      sortBy: string;
+      sortDir: string;
+    };
   };
 }
 export type CreateReduxDataProviderFn = (

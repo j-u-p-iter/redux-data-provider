@@ -45,7 +45,7 @@ export const createUseActions: CreateUseActionsFn = (
   dataProvider,
   resource,
   storeScope,
-  { getList: { pagination } }
+  { getList: { pagination, sorting } }
 ) => {
   const useActions: UseActionsHook = () => {
     const { getList, getOne } = useResourceProvider(storeScope);
@@ -61,6 +61,7 @@ export const createUseActions: CreateUseActionsFn = (
         }
 
         const data = await dataProvider.getList(resource, {
+          sorting,
           pagination: { ...pagination, offset: page - 1 }
         });
 
