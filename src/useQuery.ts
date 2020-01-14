@@ -31,33 +31,39 @@ export const createUseQuery: CreateUseQueryFn = (
     config
   );
 
-  const useQuery: UseQueryHook = (fetchName, { id: resourceId, page }) => {
+  const useQuery: UseQueryHook = (
+    fetchName,
+    { id: defaultResourceId, page: defaultPage }
+  ) => {
     const isGetListName = fetchName === "getList";
     const [isLoading, setIsLoading] = useState(false);
     const [data, setData] = useState(
       isGetListName ? { items: [], totalCount: null } : {}
     );
     const actions = useActions();
+    type QueryFn = (params?: { id?: string; page?: number }) => void;
+    const query: QueryFn = async ({
+      id = defaultResourceId,
+      page = defaultPage
+    } = {}) => {
+      const fetchParam = isGetListName ? page : id;
+      const fetchAction = actions[fetchName];
+
+      setIsLoading(true);
+
+      const response = await fetchAction(fetchParam);
+
+      setIsLoading(false);
+
+      const result = isGetListName ? response.data : response.data.items[0];
+      setData(result);
+    };
 
     useEffect(() => {
-      const fetchData = async () => {
-        const fetchParam = isGetListName ? page : resourceId;
-        const fetchAction = actions[fetchName];
-
-        setIsLoading(true);
-
-        const response = await fetchAction(fetchParam);
-
-        setIsLoading(false);
-
-        const result = isGetListName ? response.data : response.data.items[0];
-        setData(result);
-      };
-
-      fetchData();
+      query();
     }, []);
 
-    return { data, isLoading };
+    return { data, isLoading, query };
   };
 
   return useQuery;

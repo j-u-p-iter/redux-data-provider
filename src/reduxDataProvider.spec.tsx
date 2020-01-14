@@ -559,10 +559,25 @@ describe("reduxDataProvider", () => {
             }
           });
 
+        nock("https://some-host.com/api/v1")
+          .persist()
+          .get("/posts")
+          .query({ limit: 10, offset: 2, sortBy: "title", sortDir: "desc" })
+          .reply(200, {
+            data: {
+              items: [
+                { title: "hello again" },
+                { title: "hello one more time" }
+              ],
+              totalCount: 10
+            }
+          });
+
         TestComponent = () => {
           const {
             data: { items: postsFromFetch, totalCount },
-            isLoading
+            isLoading,
+            query
           } = reduxDataProvider.useQuery("getList", { page: 2 });
 
           const {
@@ -594,6 +609,13 @@ describe("reduxDataProvider", () => {
                   );
                 })}
               </ul>
+
+              <button
+                data-testid="fetch-new-page"
+                onClick={() => query({ page: 3 })}
+              >
+                Button
+              </button>
             </div>
           ) : (
             <div data-testid="spinner">Spinner</div>
@@ -615,10 +637,29 @@ describe("reduxDataProvider", () => {
           getAllByTestId("title-from-store");
           getByTestId("page-from-store");
           getByTestId("total-count");
+          getByTestId("fetch-new-page");
         });
 
         expect(queryByTestId("spinner")).toBe(null);
         expect(getByTestId("page-from-store").textContent).toBe("2");
+        expect(getAllByTestId("title-from-fetch").length).toBe(2);
+        expect(getAllByTestId("title-from-store").length).toBe(2);
+        expect(getByTestId("total-count").textContent).toBe("10");
+
+        fireEvent.click(getByTestId("fetch-new-page"));
+
+        expect(queryByTestId("spinner")).not.toBe(null);
+
+        await wait(() => {
+          getAllByTestId("title-from-fetch");
+          getAllByTestId("title-from-store");
+          getByTestId("page-from-store");
+          getByTestId("total-count");
+          getByTestId("fetch-new-page");
+        });
+
+        expect(queryByTestId("spinner")).toBe(null);
+        expect(getByTestId("page-from-store").textContent).toBe("3");
         expect(getAllByTestId("title-from-fetch").length).toBe(2);
         expect(getAllByTestId("title-from-store").length).toBe(2);
         expect(getByTestId("total-count").textContent).toBe("10");
@@ -636,10 +677,20 @@ describe("reduxDataProvider", () => {
             }
           });
 
+        nock("https://some-host.com/api/v1")
+          .persist()
+          .get("/posts/3")
+          .reply(200, {
+            data: {
+              items: [{ id: 3, title: "hello one more time" }]
+            }
+          });
+
         TestComponent = () => {
           const {
             data: postFromFetch,
-            isLoading
+            isLoading,
+            query
           } = reduxDataProvider.useQuery("getOne", { id: 2 });
 
           const { item: postFromStore } = useSelector(
@@ -651,6 +702,13 @@ describe("reduxDataProvider", () => {
               <div data-testid="title-from-fetch">{postFromFetch.title}</div>
 
               <div data-testid="title-from-store">{postFromStore.title}</div>
+
+              <button
+                data-testid="fetch-new-item"
+                onClick={() => query({ id: 3 })}
+              >
+                Button
+              </button>
             </div>
           ) : (
             <div data-testid="spinner">Spinner</div>
@@ -666,11 +724,30 @@ describe("reduxDataProvider", () => {
         await wait(() => {
           getByTestId("title-from-fetch");
           getByTestId("title-from-store");
+          getByTestId("fetch-new-item");
         });
 
         expect(queryByTestId("spinner")).toBe(null);
         expect(getByTestId("title-from-fetch").textContent).toBe("hello");
         expect(getByTestId("title-from-store").textContent).toBe("hello");
+
+        fireEvent.click(getByTestId("fetch-new-item"));
+
+        expect(queryByTestId("spinner")).not.toBe(null);
+
+        await wait(() => {
+          getByTestId("title-from-fetch");
+          getByTestId("title-from-store");
+          getByTestId("fetch-new-item");
+        });
+
+        expect(queryByTestId("spinner")).toBe(null);
+        expect(getByTestId("title-from-fetch").textContent).toBe(
+          "hello one more time"
+        );
+        expect(getByTestId("title-from-store").textContent).toBe(
+          "hello one more time"
+        );
       });
     });
   });
