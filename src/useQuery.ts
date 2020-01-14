@@ -34,7 +34,9 @@ export const createUseQuery: CreateUseQueryFn = (
   const useQuery: UseQueryHook = (fetchName, { id: resourceId, page }) => {
     const isGetListName = fetchName === "getList";
     const [isLoading, setIsLoading] = useState(false);
-    const [data, setData] = useState(isGetListName ? [] : {});
+    const [data, setData] = useState(
+      isGetListName ? { items: [], totalCount: null } : {}
+    );
     const actions = useActions();
 
     useEffect(() => {
@@ -48,9 +50,7 @@ export const createUseQuery: CreateUseQueryFn = (
 
         setIsLoading(false);
 
-        const result = isGetListName
-          ? response.data.items
-          : response.data.items[0];
+        const result = isGetListName ? response.data : response.data.items[0];
         setData(result);
       };
 

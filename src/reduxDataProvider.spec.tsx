@@ -554,13 +554,14 @@ describe("reduxDataProvider", () => {
           .query({ limit: 10, offset: 1, sortBy: "title", sortDir: "desc" })
           .reply(200, {
             data: {
-              items: [{ title: "hello" }, { title: "hello1" }]
+              items: [{ title: "hello" }, { title: "hello1" }],
+              totalCount: 10
             }
           });
 
         TestComponent = () => {
           const {
-            data: postsFromFetch,
+            data: { items: postsFromFetch, totalCount },
             isLoading
           } = reduxDataProvider.useQuery("getList", { page: 2 });
 
@@ -570,6 +571,7 @@ describe("reduxDataProvider", () => {
 
           return !isLoading ? (
             <div>
+              <div data-testid="total-count">{totalCount}</div>
               <ul>
                 {postsFromFetch.map(({ title }) => {
                   return (
@@ -612,12 +614,14 @@ describe("reduxDataProvider", () => {
           getAllByTestId("title-from-fetch");
           getAllByTestId("title-from-store");
           getByTestId("page-from-store");
+          getByTestId("total-count");
         });
 
         expect(queryByTestId("spinner")).toBe(null);
         expect(getByTestId("page-from-store").textContent).toBe("2");
         expect(getAllByTestId("title-from-fetch").length).toBe(2);
         expect(getAllByTestId("title-from-store").length).toBe(2);
+        expect(getByTestId("total-count").textContent).toBe("10");
       });
     });
 
