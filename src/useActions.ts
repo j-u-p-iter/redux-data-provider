@@ -62,7 +62,7 @@ export const createUseActions: CreateUseActionsFn = (
 
         const data = await dataProvider.getList(resource, {
           sorting,
-          pagination: { ...pagination, offset: page }
+          pagination: { ...pagination, offset: pagination.limit * (page - 1) }
         });
 
         dispatch(
