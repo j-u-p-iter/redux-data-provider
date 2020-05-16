@@ -93,8 +93,9 @@ export const createReducer = resource => {
       // add list data and page data to the store
       case FETCH_DATA_WITH_SUCCESS:
         return {
-          ...state.list,
+          ...state,
           list: {
+            ...state.list,
             data: action.payload.data.items,
             page: action.payload.data.page
           }
