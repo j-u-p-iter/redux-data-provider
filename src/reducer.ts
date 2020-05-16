@@ -135,15 +135,12 @@ export const createReducer = resource => {
         };
 
       case DELETE_ITEM_WITH_SUCCESS:
-        const isItemInList = state.list.data.find(item => {
-          return item.id === action.payload.data.id;
-        });
-
         return {
           list: {
             ...state.list,
-            data: isItemInList ? [] : state.list.data,
-            page: isItemInList ? null : state.list.page
+            data: state.list.data.filter(({ id }) => {
+              return id !== action.payload.data.id;
+            })
           },
           item: action.payload.data.id === state.item.id ? {} : state.item
         };

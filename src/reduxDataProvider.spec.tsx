@@ -520,6 +520,10 @@ describe("reduxDataProvider", () => {
               {
                 id: postId,
                 title: "simple post"
+              },
+              {
+                id: 2,
+                title: "one more post"
               }
             ],
             page: 1
@@ -537,9 +541,11 @@ describe("reduxDataProvider", () => {
         expect(getByTestId("title-from-fetch").textContent).toBe(
           "deleted post"
         );
-        expect(queryByTestId("title-from-list")).toBe(null);
+        expect(queryByTestId("title-from-list").textContent).toBe(
+          "one more post"
+        );
         expect(queryByTestId("title-from-item")).toBe(null);
-        expect(queryByTestId("page-from-store")).toBe(null);
+        expect(queryByTestId("page-from-store").textContent).toBe("1");
         expect(request.isDone()).toBe(true);
       });
     });
