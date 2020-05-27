@@ -68,6 +68,7 @@ export const createUseActions: CreateUseActionsFn = (
         dispatch(
           createAction(FETCH_DATA_WITH_SUCCESS, {
             items: data.data.items,
+            totalCount: data.data.totalCount,
             page
           })
         );

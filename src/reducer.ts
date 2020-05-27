@@ -97,7 +97,8 @@ export const createReducer = resource => {
           list: {
             ...state.list,
             data: action.payload.data.items,
-            page: action.payload.data.page
+            page: action.payload.data.page,
+            totalCount: action.payload.data.totalCount
           }
         };
 

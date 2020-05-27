@@ -70,23 +70,30 @@ describe("reduxDataProvider", () => {
     describe("getList", () => {
       let request;
       let post;
+      let totalCount;
 
       beforeAll(() => {
         TestComponent = () => {
           const { getList } = reduxDataProvider.useActions();
           const [postsFromFetch, setPostsFromFetch] = useState([]);
+          const [totalCountFromFetch, setTotalCountFromFetch] = useState([]);
 
           const {
-            list: { data: postsFromStore, page: pageFromStore }
+            list: {
+              data: postsFromStore,
+              page: pageFromStore,
+              totalCount: totalCountFromStore
+            }
           } = useSelector(state => state.resources.posts);
 
           useEffect(() => {
             const fetchData = async () => {
               const {
-                data: { items: posts }
+                data: { items: posts, totalCount: totalCountFromResponse }
               } = await getList(1);
 
               setPostsFromFetch(posts);
+              setTotalCountFromFetch(totalCountFromResponse);
             };
 
             fetchData();
@@ -104,9 +111,22 @@ describe("reduxDataProvider", () => {
                 })}
               </ul>
 
+              {totalCountFromFetch ? (
+                <div data-testid="total-count-from-fetch">
+                  {totalCountFromFetch}
+                </div>
+              ) : null}
+
               {pageFromStore ? (
                 <div data-testid="page-from-store">{pageFromStore}</div>
               ) : null}
+
+              {totalCountFromStore ? (
+                <div data-testid="total-count-from-store">
+                  {totalCountFromStore}
+                </div>
+              ) : null}
+
               <ul>
                 {postsFromStore.map(({ title }) => {
                   return (
@@ -123,12 +143,13 @@ describe("reduxDataProvider", () => {
 
       beforeEach(() => {
         post = { title: "hello" };
+        totalCount = 10;
 
         request = nock("https://some-host.com/api/v1")
           .persist()
           .get("/posts")
           .query({ limit: 10, offset: 0, sortBy: "title", sortDir: "desc" })
-          .reply(200, { data: { items: [post] } });
+          .reply(200, { data: { items: [post], totalCount } });
       });
 
       describe("without appropriate state in store", () => {
